@@ -1,4 +1,4 @@
-var inputs [0,1,0,0];
+var inputs = [0,1,0,0];
 var weights = [0,0,0,0];
 
 // These are vectors.  The inputVector takes the inputs.  The weights vector
@@ -7,12 +7,17 @@ var weights = [0,0,0,0];
 var desiredResult = 1;
 
 // Desired desired, which for this example is the integer, 1.
+var learningRate = 0.20;
 
-var neuralNetResult = evaluateNeuralNetwork(inputs, weights)
+var error;
+
+var trials = 6;
+
+// Arbitrary number of times we will trial the neural network.
+
+var neuralNetResult;
 
 // Stores the actual result after running the evaluateNeuralNetwork function.
-
-var learningRate = 0.20;
 
 // Learning rate - the bigger, the faster it learns.
 
@@ -25,16 +30,16 @@ function evaluateNeuralNetwork(inputVector, weightVector) {
   return (result.toFixed(2));
 }
 
+function evaluateNeuralNetError(desired, actual) {
+  return (desired - actual).toFixed(2);
+}
+
 function learn(inputVector, weightVector) {
   weightVector.forEach(function(weight, index, weights) {
     if (inputVector[index] > 0) {
-      weights[index] = weight + learningRate;
+      weights[index] = (weight + learningRate);
     }
   });
-}
-
-function evaluateNeuralNetError(desired, actual) {
-  return (desired - actual);
 }
 
 // Evaluates difference between the NN result, i.e. outcome of
@@ -44,18 +49,12 @@ function evaluateNeuralNetError(desired, actual) {
 // After evaluating both the Network and the Error we would get:
 // 'Neural Net output: 0.00 Error: 1'
 
-console.log("Neural Net output: " + neuralNetResult + " Error: " + evaluateNeuralNetError(desiredResult, neuralNetResult));
+function train(trials) {
+  for (i = 0; i < trials; i++) {
+    neuralNetResult = evaluateNeuralNetwork(input, weights);
+    console.log("Neural Net output: " + neuralNetResult + " Error: " + evaluateNeuralNetError(desiredResult, neuralNetResult) + " Weight Vector: " + weights);
+    learn(input, weights);
+  }
+}
 
-// Original weight vector: [0,0,0,0]
-// Neural Net output: 0.00 Error: 1
-
-learn(inputs, weights);
-console.log(weights);
-
-console.log("Neural Net Output: " + neuralNetResult + " Error: " + evaluateNeuralNetError(desiredResult, neuralNetResult));
-
-// New Weight vector: [0,0.20,0,0]
-// Neural Net output: 0.20 Error: 0.8 
-// If it is not apparently obvious, a Neural Net output closer to 1
-// (chicken dinner) is what we want, so we are heading in the right
-// direction
+train(trials);
