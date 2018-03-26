@@ -1,4 +1,4 @@
-var inputs = [0,1,0,0];
+var inputs = [0,0,1,0];
 var weights = [0,0,0,0];
 
 // These are vectors.  The inputVector takes the inputs.  The weights vector
@@ -51,9 +51,9 @@ function learn(inputVector, weightVector) {
 
 function train(trials) {
   for (i = 0; i < trials; i++) {
-    neuralNetResult = evaluateNeuralNetwork(input, weights);
+    neuralNetResult = evaluateNeuralNetwork(inputs, weights);
     console.log("Neural Net output: " + neuralNetResult + " Error: " + evaluateNeuralNetError(desiredResult, neuralNetResult) + " Weight Vector: " + weights);
-    learn(input, weights);
+    learn(inputs, weights);
   }
 }
 
