@@ -1,7 +1,8 @@
 var inputs [0,1,0,0];
 var weights = [0,0,0,0];
 
-// These are vectors
+// These are vectors.  The inputVector takes the inputs.  The weights vector
+// takes the weights.
 
 var desiredResult = 1;
 
@@ -11,13 +12,25 @@ var neuralNetResult = evaluateNeuralNetwork(inputs, weights)
 
 // Stores the actual result after running the evaluateNeuralNetwork function.
 
-function evaluateNeuralNetwork(inputVector, WeightVector) {
+var learningRate = 0.20;
+
+// Learning rate - the bigger, the faster it learns.
+
+function evaluateNeuralNetwork(inputVector, weightVector) {
   var result = 0;
   inputVector.forEach(function(inputValue, weightIndex) {
-    layerValue = inputValue*WeightVector[weightIndex];
-      result += layerValue;
+    layerValue = inputValue * weightVector[weightIndex];
+    result += layerValue;
   });
   return (result.toFixed(2));
+}
+
+function learn(inputVector, weightVector) {
+  weightVector.forEach(function(weight, index, weights) {
+    if (inputVector[index] > 0) {
+      weights[index] = weight + learningRate;
+    }
+  });
 }
 
 function evaluateNeuralNetError(desired, actual) {
@@ -33,4 +46,16 @@ function evaluateNeuralNetError(desired, actual) {
 
 console.log("Neural Net output: " + neuralNetResult + " Error: " + evaluateNeuralNetError(desiredResult, neuralNetResult));
 
-// Runs NN in the console.  Returns 'Neutral Net output: 1'
+// Original weight vector: [0,0,0,0]
+// Neural Net output: 0.00 Error: 1
+
+learn(inputs, weights);
+console.log(weights);
+
+console.log("Neural Net Output: " + neuralNetResult + " Error: " + evaluateNeuralNetError(desiredResult, neuralNetResult));
+
+// New Weight vector: [0,0.20,0,0]
+// Neural Net output: 0.20 Error: 0.8 
+// If it is not apparently obvious, a Neural Net output closer to 1
+// (chicken dinner) is what we want, so we are heading in the right
+// direction
